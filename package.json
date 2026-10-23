@@ -4,7 +4,11 @@
   "private": true,
   "type": "module",
   "description": "Control web y panel de escritorio para Holyrics",
-  "author": "wcmark",
+  "author": {
+    "name": "Marcos Tapia",
+    "url": "https://github.com/wcmark"
+  },
+  "license": "GPL-3.0-only",
   "main": "electron/main.js",
   "scripts": {
     "start": "electron .",
@@ -22,8 +26,10 @@
   "build": {
     "appId": "com.wcmark.holyricswebcontrol",
     "productName": "Holyrics Web Control",
+    "copyright": "Copyright © 2026 Marcos Tapia",
     "files": ["electron/**/*", "public/**/*", "server.js", "package.json"],
-    "win": { "target": ["portable", "nsis"] },
+    "extraFiles": ["LICENSE", "THIRD_PARTY_NOTICES.md"],
+    "win": { "target": ["portable", "nsis"], "icon": "electron/app-icon.ico" },
     "nsis": { "artifactName": "Holyrics-Web-Control-Setup-${version}-${arch}.${ext}" },
     "portable": { "artifactName": "Holyrics-Web-Control-Portable-${version}-${arch}.${ext}" }
   }

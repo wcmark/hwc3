@@ -2,6 +2,18 @@
 
 Nueva versión para controlar Holyrics desde el navegador y mantener una aplicación local de Windows para la configuración y aprobación de dispositivos. Esta versión 3.0.0 en Node.js y Electron sucede a la versión 2.4.1 en Python.
 
+## Autor y licencia
+
+Copyright © 2026 Marcos Tapia ([wcmark](https://github.com/wcmark)).
+
+El código propio de Web Control para Holyrics se distribuye bajo la licencia **GNU General Public License, versión 3 únicamente** (`GPL-3.0-only`). Puedes usarlo, modificarlo y redistribuirlo bajo sus condiciones. Al distribuir versiones modificadas, debes conservar esta licencia y facilitar el código fuente correspondiente. El programa se ofrece sin garantía, en los términos de la licencia.
+
+Consulta el texto completo en [LICENSE](LICENSE) y los avisos sobre dependencias, recursos y el logo de Holyrics en [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+Los aportes para acompañar el desarrollo son voluntarios: [Ko-fi de Marcos Tapia](https://ko-fi.com/marcostapia).
+
+La versión, el autor y los datos del ejecutable se mantienen en `package.json`. No se necesita un archivo de versión separado. Consulta el [historial de cambios](CHANGELOG.md).
+
 ## Iniciar en modo desarrollo
 
 1. Instala Node.js 24 LTS (o una versión compatible, como 22.12 o posterior).
@@ -24,9 +36,11 @@ La página local de configuración está en `http://localhost:5000/desktop`. Tam
 
 ## Configuración y datos
 
-En el modo escritorio, la configuración y la lista de dispositivos autorizados se guardan en la carpeta de datos de usuario de Windows. En modo `start:web`, se guardan en `data/` dentro del proyecto. Los tokens de Holyrics no se envían al navegador.
+En el modo escritorio, la configuración y la lista de dispositivos autorizados se guardan en `%APPDATA%\HWC3\data`. Las preferencias de inicio y bienvenida están en `%APPDATA%\HWC3`. Al abrir por primera vez esta versión, se importan los ajustes de `%APPDATA%\holyrics-web-control-v2` si no hay datos nuevos; la carpeta anterior se conserva como respaldo. En modo `start:web`, se guardan en `data/` dentro del proyecto. Los tokens de Holyrics no se envían al navegador.
 
 El botón **Importar ajustes de la versión anterior** acepta el `config.json` existente y migra nombres de equipos, IP, puerto, token, puerto web, contraseña y modo de proyección.
+
+En una instalación nueva, la aplicación crea `%APPDATA%\HWC3` y utiliza la configuración predeterminada. No requiere que exista la carpeta de la versión anterior.
 
 En **Control de diapositivas y OBS**, elige la transmisión para la diapositiva actual y, si quieres, otra para la siguiente. Las opciones son **Imagen**, **HTML 1**, **HTML 2** y **HTML 3**. El puerto HTML se guarda por equipo, es 80 de forma predeterminada y también se usa para el chat.
 

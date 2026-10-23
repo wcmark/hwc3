@@ -4,8 +4,10 @@ import { fileURLToPath } from 'node:url';
 import { startServer } from '../server.js';
 import { createWelcomePreferences, readAboutContent } from './about-settings.js';
 import { createStartupPreferences, startupArgument } from './startup-settings.js';
+import { configureUserData } from './user-data.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
+const appIcon = path.join(here, process.platform === 'win32' ? 'app-icon.ico' : 'app-icon.png');
 let mainWindow;
 let tray;
 let webServer;
@@ -15,6 +17,7 @@ let aboutContent;
 let welcomePreferences;
 let startupPreferences;
 let revealAfterStartup = false;
+const migrateUserData = configureUserData(app);
 const hasSingleInstanceLock = app.requestSingleInstanceLock();
 if (!hasSingleInstanceLock) app.quit();
 else app.on('second-instance', (_event, commandLine) => {
@@ -39,6 +42,7 @@ async function openAbout(mode = 'about') {
     width: 600, height: 720, minWidth: 440, minHeight: 520,
     title: mode === 'welcome' ? 'Bienvenido · Web Control para Holyrics' : 'Acerca de · Web Control para Holyrics',
     parent: mainWindow, modal: true, show: false, autoHideMenuBar: true,
+    icon: appIcon,
     backgroundColor: '#0b1114',
     webPreferences: { preload: path.join(here, 'about-preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true }
   });
@@ -79,6 +83,7 @@ async function openWindow() {
   mainWindow = new BrowserWindow({
     width: 980, height: 760, minWidth: 760, minHeight: 600, show: false,
     title: 'Holyrics Web Control',
+    icon: appIcon,
     backgroundColor: '#0b1114',
     webPreferences: { preload: path.join(here, 'preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true }
   });
@@ -96,7 +101,7 @@ async function openWindow() {
 }
 
 function createTray() {
-  tray = new Tray(process.platform === 'win32' ? path.join(here, 'tray.ico') : path.join(here, 'tray.png'));
+  tray = new Tray(appIcon);
   tray.setToolTip('Holyrics Web Control');
   tray.setContextMenu(Menu.buildFromTemplate([
     { label: 'Abrir configuración', click: openWindow },
@@ -110,6 +115,7 @@ function createTray() {
 
 if (hasSingleInstanceLock) app.whenReady().then(async () => {
   app.setAppUserModelId('com.wcmark.holyricswebcontrol');
+  await migrateUserData();
   const dataDir = path.join(app.getPath('userData'), 'data');
   startupPreferences = await createStartupPreferences(path.join(app.getPath('userData'), 'startup-preferences.json'));
   welcomePreferences = await createWelcomePreferences(path.join(app.getPath('userData'), 'interface-preferences.json'));
