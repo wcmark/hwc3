@@ -46,9 +46,6 @@ Para abrir la configuración, haz doble clic en el icono de la bandeja o usa su 
 
 Si usas el portable con inicio automático, guárdalo en una ubicación fija antes de activarlo. Si cambias de ubicación, vuelve a configurar esa opción desde el nuevo ejecutable.
 
-## Publicación y binarios
-
-Consulta [PUBLICAR.md](PUBLICAR.md) para publicar el código en GitHub y generar el instalador y el portable de Windows x64. Los comandos de compilación generan archivos locales; no publican automáticamente.
 
 ## Estado de esta base
 
