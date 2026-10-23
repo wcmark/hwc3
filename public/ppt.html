@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#191919">
+  <title>Presentación · Holyrics</title>
+  <link rel="stylesheet" href="/public/css/ppt.css">
+</head>
+<body>
+  <main class="ppt-shell">
+    <section id="streamGrid" class="stream-grid">
+      <article id="currentPanel" class="stream-panel current-panel">
+        <h1>Diapositiva actual</h1>
+        <div class="current-content">
+          <div class="stream-frame-wrap">
+            <iframe id="currentStream" title="Transmisión de la diapositiva actual" allow="autoplay; fullscreen" tabindex="-1"></iframe>
+            <div id="currentEmpty" class="stream-empty" hidden>Configurá el equipo y la transmisión en los ajustes de escritorio.</div>
+          </div>
+          <nav class="ppt-controls" aria-label="Control de diapositivas">
+            <button id="previousSlide" type="button" aria-label="Atrás" title="Atrás"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4 6 12l9 8Z"/></svg></button>
+            <span id="slideCounter" class="slide-counter" role="status" aria-live="polite" aria-atomic="true"></span>
+            <button id="nextSlide" type="button" aria-label="Adelante" title="Adelante"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 4 9 8-9 8Z"/></svg></button>
+          </nav>
+        </div>
+      </article>
+      <article id="nextPanel" class="stream-panel next-panel" hidden>
+        <h2>Diapositiva siguiente</h2>
+        <div class="stream-frame-wrap">
+          <iframe id="nextStream" title="Transmisión de la diapositiva siguiente" allow="autoplay; fullscreen" tabindex="-1"></iframe>
+        </div>
+      </article>
+    </section>
+    <p id="connectionState" class="ppt-status" role="status" hidden></p>
+  </main>
+  <script type="module" src="/public/js/ppt.js"></script>
+</body>
+</html>

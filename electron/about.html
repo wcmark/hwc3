@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Acerca de · Web Control para Holyrics</title>
+  <link rel="stylesheet" href="about.css">
+</head>
+<body>
+  <main>
+    <p id="mode" class="mode">Bienvenido</p>
+    <p id="heading" class="motto"></p>
+    <div class="app-title"><span class="app-mark" aria-hidden="true">H</span><div><h1 id="appName">Web Control para Holyrics</h1><p id="version" class="version"></p></div></div>
+    <p id="description" class="description"></p>
+    <section class="contacts" aria-labelledby="contactHeading"><h2 id="contactHeading">Información de contacto</h2><div id="links" class="contact-links"></div><p id="location" class="location"></p></section>
+    <section class="support" aria-labelledby="supportHeading"><h2 id="supportHeading">Acompañá el desarrollo</h2><p id="supportMessage"></p><button id="supportButton" class="button support-button" type="button">Contribuir al desarrollo ↗</button></section>
+    <p id="error" class="error" role="alert" hidden></p>
+  </main>
+  <footer><label class="preference"><input id="dontShow" type="checkbox" disabled> No volver a mostrar al iniciar</label><button id="continueButton" class="button primary" type="button">Continuar</button></footer>
+  <script src="about.js"></script>
+</body>
+</html>

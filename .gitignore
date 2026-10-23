@@ -1,0 +1,13 @@
+node_modules/
+/data/
+/config.json
+.env
+.env.*
+!.env.example
+server-secret
+trusted-devices.json
+startup-preferences.json
+interface-preferences.json
+dist/
+release/
+*.log

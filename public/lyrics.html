@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Letras · Holyrics</title>
+  <link rel="stylesheet" href="/public/css/app.css">
+  <link rel="stylesheet" href="/public/css/playlists.css">
+  <link rel="stylesheet" href="/public/css/compact.css">
+  <link rel="stylesheet" href="/public/css/lyrics.css">
+  <link rel="stylesheet" href="/public/css/playlist-slides.css">
+  <link rel="stylesheet" href="/public/css/quick-bible.css">
+</head>
+<body>
+  <main class="shell lyrics-shell">
+    <nav class="nav page-nav" aria-label="Secciones"></nav>
+    <section class="panel lyrics-search-bar" aria-label="Buscar canciones y elegir tema">
+      <form id="searchForm">
+        <input id="query" class="control" placeholder="Título, artista o frase" aria-label="Buscar canciones por título, artista o frase" autocomplete="off">
+        <button class="btn primary lyrics-icon-button" type="submit" aria-label="Buscar" title="Buscar"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg></button>
+      </form>
+      <div class="lyrics-theme-controls">
+        <button id="lyricsTheme" class="current-theme" type="button" aria-haspopup="dialog" aria-controls="lyricsThemeDialog" aria-label="Elegir tema predeterminado" title="Elegir tema predeterminado"><span class="theme-preview theme-preview-empty" aria-hidden="true">◐</span><span class="current-theme-name">Elegir tema</span></button>
+        <label class="lyrics-theme-override" title="Aplicar el tema predeterminado después de abrir cada canción, aunque tenga un tema propio. No modifica la canción guardada."><input id="overrideSongTheme" type="checkbox" aria-label="Usar siempre el tema predeterminado al proyectar" disabled><span>Usar siempre</span></label>
+      </div>
+    </section>
+    <div class="playlist-controls" role="toolbar" aria-label="Controles de presentación">
+      <button id="togglePlaylistSlides" class="btn secondary playlist-slides-toggle" type="button" aria-expanded="false" aria-controls="playlistSlides" aria-label="Mostrar diapositivas" title="Mostrar diapositivas"><span aria-hidden="true">›</span></button>
+      <div class="playlist-action-buttons">
+        <button class="btn secondary" type="button" data-action="CloseCurrentPresentation" aria-label="Cerrar presentación (Esc)" title="Cerrar presentación (Esc)">Esc</button>
+        <button class="btn secondary" type="button" data-action="ToggleF8" title="Mostrar papel tapiz (F8)" aria-label="Mostrar papel tapiz (F8)">F8</button>
+        <button class="btn secondary" type="button" data-action="ToggleF9" title="Pantalla vacía (F9)" aria-label="Pantalla vacía (F9)">F9</button>
+        <button class="btn secondary" type="button" data-action="ToggleF10" title="Pantalla negra (F10)" aria-label="Pantalla negra (F10)">F10</button>
+        <button id="openBibleSearch" class="btn secondary presentation-bible-button" type="button" title="Presentación rápida" aria-label="Presentación rápida" aria-haspopup="dialog" aria-controls="bibleSearchDialog" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 0v14m-2 2a2 2 0 0 1 2-2h14M12 6v8m-3-5h6"/></svg></button>
+        <span class="presentation-navigation">
+          <span class="playlist-controls-divider" aria-hidden="true"></span>
+          <button class="btn secondary" type="button" data-action="ActionPrevious" aria-label="Diapositiva anterior" title="Atrás (flecha izquierda)">← Anterior</button>
+          <button class="btn primary" type="button" data-action="ActionNext" aria-label="Diapositiva siguiente" title="Adelante (flecha derecha)">Siguiente →</button>
+        </span>
+      </div>
+    </div>
+    <section id="playlistSlides" class="playlist-slides" aria-label="Diapositivas de la presentación actual" hidden>
+      <nav id="playlistSections" class="playlist-sections" aria-label="Secciones de la canción" hidden></nav>
+      <div class="playlist-slides-heading"><strong id="playlistSlidesName"></strong><span id="playlistSlidePosition" class="muted tiny" aria-live="polite"></span></div>
+      <p id="playlistSlidesMessage" class="playlist-slides-message" role="status" hidden></p>
+      <div id="playlistSlidesGrid" class="playlist-slides-grid"></div>
+    </section>
+    <section class="panel" aria-label="Resultados de búsqueda">
+      <div id="results" class="item-list" aria-live="polite"><div class="empty">Escribe para buscar en tus letras.</div></div>
+    </section>
+    <section id="songDetail" class="panel lyrics-detail" aria-label="Vista previa de la letra" tabindex="-1" hidden></section>
+  </main>
+  <dialog id="lyricsThemeDialog" class="theme-dialog" aria-labelledby="lyricsThemeTitle">
+    <div class="theme-dialog-header"><h2 id="lyricsThemeTitle">Tema para canciones sin tema asignado</h2><button id="closeLyricsThemes" class="notice-close" type="button" title="Cerrar selector de temas" aria-label="Cerrar selector de temas">×</button></div>
+    <div id="songThemeOptions" class="song-theme-options" hidden><button id="clearSongTheme" class="btn secondary" type="button" title="Quitar el tema asignado a esta canción">Usar tema predeterminado</button><p class="muted tiny">La asignación se guarda en esta canción de Holyrics.</p></div>
+    <p id="lyricsThemeMessage" class="theme-message" role="status" hidden></p>
+    <div id="lyricsThemeGrid" class="theme-grid"></div>
+  </dialog>
+  <script type="module" src="/public/js/lyrics.js"></script>
+</body>
+</html>

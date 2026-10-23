@@ -1,0 +1,15 @@
+{
+  "heading": "☝️ PARA LA GLORIA DE DIOS ☝️",
+  "appName": "Web Control para Holyrics",
+  "description": "Controlá las presentaciones, letras, medios y pasajes de la Biblia desde el navegador, un móvil, una tablet o los paneles de OBS.",
+  "contactHeading": "Información de contacto",
+  "links": [
+    { "id": "telegram", "label": "Telegram", "text": "@mark_ost7", "url": "https://t.me/mark_ost7" },
+    { "id": "github", "label": "GitHub", "text": "github.com/wcmark", "url": "https://github.com/wcmark" },
+    { "id": "youtube", "label": "YouTube personal", "text": "@Marcos-Tapia", "url": "https://www.youtube.com/@Marcos-Tapia" },
+    { "id": "church", "label": "YouTube de la iglesia", "text": "@ice-lapaz", "url": "https://www.youtube.com/@ice-lapaz" }
+  ],
+  "location": "San Miguel del Monte, Bs. As. - Argentina",
+  "supportMessage": "Si esta herramienta te resulta útil, podés contribuir de forma voluntaria para acompañar su desarrollo.",
+  "supportUrl": "https://ko-fi.com/marcostapia"
+}

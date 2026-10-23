@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Medios · Holyrics</title>
+  <link rel="stylesheet" href="/public/css/app.css">
+  <link rel="stylesheet" href="/public/css/compact.css">
+  <link rel="stylesheet" href="/public/css/media.css">
+</head>
+<body>
+  <main class="shell media-shell">
+    <nav class="nav page-nav" aria-label="Secciones"></nav>
+    <section class="panel media-player" aria-label="Reproductor de medios">
+      <div class="player-heading">
+        <strong id="playerName">Sin información del reproductor</strong>
+        <button class="btn secondary player-expand" id="playerExpand" type="button" aria-expanded="true" aria-controls="playerDetails" title="Ocultar controles del reproductor" aria-label="Ocultar controles del reproductor"><span aria-hidden="true">›</span></button>
+      </div>
+      <div id="playerState" class="muted tiny" role="status">Consultando estado…</div>
+      <div id="playerDetails" class="player-details">
+        <div class="player-timeline">
+          <span id="elapsed" class="tiny muted">00:00</span>
+          <input id="seek" class="progress" type="range" min="0" max="1" value="0" aria-label="Posición de reproducción" title="Cambiar posición de reproducción" disabled>
+          <span id="duration" class="tiny muted">00:00</span>
+        </div>
+        <div class="player-controls" role="group" aria-label="Acciones del reproductor">
+          <button class="btn secondary" type="button" data-toggle="repeat" data-icon="repeat" aria-pressed="false" title="Repetir" aria-label="Repetir"></button>
+          <button class="btn secondary" type="button" data-toggle="shuffle" data-icon="shuffle" aria-pressed="false" title="Aleatorio" aria-label="Aleatorio"></button>
+          <button class="btn secondary" type="button" data-toggle="fullscreen" data-icon="fullscreen" aria-pressed="false" title="Pantalla completa (F11)" aria-label="Pantalla completa (F11)"></button>
+          <button class="btn secondary" type="button" data-player="previous" data-icon="previous" title="Anterior" aria-label="Anterior"></button>
+          <button class="btn primary" type="button" data-player="toggle" data-icon="play" title="Reproducir" aria-label="Reproducir"></button>
+          <button class="btn secondary" type="button" data-player="next" data-icon="next" title="Siguiente" aria-label="Siguiente"></button>
+          <button class="btn secondary" type="button" data-player="stop" data-icon="stop" title="Detener" aria-label="Detener"></button>
+        </div>
+        <div class="player-volume">
+          <input id="volume" class="progress" type="range" min="0" max="100" value="80" aria-label="Volumen" title="Volumen">
+          <span id="volumeValue" class="tiny muted">80%</span>
+          <button class="btn secondary" type="button" id="mute" data-icon="volume" aria-pressed="false" title="Silenciar" aria-label="Silenciar"></button>
+        </div>
+      </div>
+    </section>
+    <section class="panel media-library" aria-label="Biblioteca de medios">
+      <div class="tab-row" id="mediaTabs" role="group" aria-label="Tipo de medio">
+        <button type="button" class="active" data-kind="Images" aria-pressed="true" title="Biblioteca de imágenes">Imágenes</button>
+        <button type="button" data-kind="Videos" aria-pressed="false" title="Biblioteca de videos">Videos</button>
+        <button type="button" data-kind="Audios" aria-pressed="false" title="Biblioteca de audios">Audios</button>
+        <button type="button" data-kind="Files" aria-pressed="false" title="Biblioteca de archivos">Archivos</button>
+        <button type="button" data-kind="Texts" aria-pressed="false" title="Biblioteca de textos">Texto</button>
+      </div>
+      <div class="toolbar">
+        <input id="filter" class="control grow" placeholder="Filtrar por nombre" aria-label="Filtrar biblioteca por nombre">
+        <button class="btn secondary media-icon-button" type="button" id="refresh" data-icon="refresh" title="Actualizar biblioteca" aria-label="Actualizar biblioteca"></button>
+      </div>
+      <div id="folderBar" class="folder-bar" hidden>
+        <button class="btn secondary media-icon-button" type="button" id="parentFolder" data-icon="back" title="Volver a la carpeta anterior" aria-label="Volver a la carpeta anterior"></button>
+        <span id="folderName" class="muted tiny"></span>
+      </div>
+      <div id="mediaItems" class="media-grid" aria-live="polite"><div class="empty">Consultando biblioteca…</div></div>
+    </section>
+  </main>
+  <script type="module" src="/public/js/media.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+.desktop-header{display:flex;flex-direction:row;align-items:center;flex-wrap:wrap;gap:14px;padding:12px 2px;margin-bottom:18px}
+.desktop-header .brand{font-size:20px;letter-spacing:-.025em}
+.desktop-header .brand small{display:block;font-size:12px;color:var(--muted);font-weight:400;letter-spacing:0;margin-top:4px}
+.desktop-header .toolbar{margin-left:auto}
+.device-permission-card{display:grid;gap:12px;min-width:0;padding:12px;border:1px solid var(--line);border-radius:9px;background:var(--panel2)}
+.device-permissions{min-width:0;margin:0;padding:10px;border:1px solid var(--line);border-radius:7px}
+.device-permissions legend{padding:0 5px;color:var(--muted);font-size:12px}
+.device-page-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:5px;margin-bottom:10px}
+.device-page-options label{display:flex;align-items:center;gap:6px;padding:5px;border-radius:5px;cursor:pointer}
+.device-page-options input{accent-color:var(--accent);margin:0}
+.device-page-options label:hover{background:#244138}
+.device-page-options label:focus-within{outline:2px solid var(--accent)}
+.device-permission-card .btn:hover{border-color:var(--accent);filter:brightness(1.12)}
+#teamHtmlPort{max-width:160px}
+@media(max-width:520px){.desktop-header{padding:4px 0;margin-bottom:12px}.desktop-header .brand{font-size:16px}.desktop-header .toolbar{margin-left:0}}

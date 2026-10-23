@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0b1114">
+  <title>Playlists · Holyrics</title>
+  <link rel="stylesheet" href="/public/css/app.css">
+  <link rel="stylesheet" href="/public/css/playlists.css">
+  <link rel="stylesheet" href="/public/css/compact.css">
+  <link rel="stylesheet" href="/public/css/playlist-slides.css">
+  <link rel="stylesheet" href="/public/css/quick-bible.css">
+</head>
+<body>
+  <main class="shell">
+    <nav class="nav page-nav" aria-label="Secciones"></nav>
+    <div class="toolbar playlist-picker-bar">
+      <label class="field playlist-picker"><span>Lista</span><select id="playlistSelect" class="control"><option value="">Cargando listas…</option></select></label>
+      <div class="playlist-theme-slot">
+        <button id="currentTheme" class="current-theme" type="button" hidden aria-haspopup="dialog" aria-controls="themeDialog" aria-label="Cambiar tema de la presentación"></button>
+      </div>
+    </div>
+    <div class="playlist-controls" role="toolbar" aria-label="Controles de presentación">
+      <button id="togglePlaylistSlides" class="btn secondary playlist-slides-toggle" type="button" aria-expanded="false" aria-controls="playlistSlides" aria-label="Mostrar diapositivas" title="Mostrar diapositivas"><span aria-hidden="true">›</span></button>
+      <div class="playlist-action-buttons">
+      <button class="btn secondary" type="button" data-action="CloseCurrentPresentation" aria-label="Cerrar presentación (Esc)" title="Cerrar presentación (Esc)">Esc</button>
+      <button class="btn secondary" type="button" data-action="ToggleF8" title="Mostrar papel tapiz (F8)" aria-label="Mostrar papel tapiz (F8)">F8</button>
+      <button class="btn secondary" type="button" data-action="ToggleF9" title="Pantalla vacía (F9)" aria-label="Pantalla vacía (F9)">F9</button>
+      <button class="btn secondary" type="button" data-action="ToggleF10" title="Pantalla negra (F10)" aria-label="Pantalla negra (F10)">F10</button>
+      <button id="openBibleSearch" class="btn secondary presentation-bible-button" type="button" title="Presentación rápida" aria-label="Presentación rápida" aria-haspopup="dialog" aria-controls="bibleSearchDialog" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 0v14m-2 2a2 2 0 0 1 2-2h14M12 6v8m-3-5h6"/></svg></button>
+      <span class="presentation-navigation">
+      <span class="playlist-controls-divider" aria-hidden="true"></span>
+      <button class="btn secondary" type="button" data-action="ActionPrevious" aria-label="Diapositiva anterior" title="Atrás (flecha izquierda)">← Anterior</button>
+      <button class="btn primary" type="button" data-action="ActionNext" aria-label="Diapositiva siguiente" title="Adelante (flecha derecha)">Siguiente →</button>
+      </span>
+      </div>
+    </div>
+    <section id="playlistSlides" class="playlist-slides" aria-label="Diapositivas de la presentación actual" hidden>
+      <nav id="playlistSections" class="playlist-sections" aria-label="Secciones de la canción" hidden></nav>
+      <div class="playlist-slides-heading"><strong id="playlistSlidesName"></strong><span id="playlistSlidePosition" class="muted tiny" aria-live="polite"></span></div>
+      <p id="playlistSlidesMessage" class="playlist-slides-message" role="status" hidden></p>
+      <div id="playlistSlidesGrid" class="playlist-slides-grid"></div>
+    </section>
+    <section class="panel playlist-panel">
+      <div id="playlistNotice" class="playlist-notice" hidden>
+        <span id="playlistNoticeText" role="status"></span>
+        <button id="closePlaylistNotice" class="notice-close" type="button" aria-label="Cerrar mensaje">×</button>
+      </div>
+      <div id="playlistMeta" class="muted tiny" aria-live="polite"></div>
+      <div id="playlistItems" class="playlist-items"><div class="empty">Cargando playlist…</div></div>
+    </section>
+  </main>
+  <dialog id="themeDialog" class="theme-dialog" aria-labelledby="themeDialogTitle">
+    <div class="theme-dialog-header"><h2 id="themeDialogTitle">Temas</h2><button id="closeThemeDialog" class="notice-close" type="button" aria-label="Cerrar selector de temas">×</button></div>
+    <p id="themeMessage" class="theme-message" role="status" hidden></p>
+    <div id="themeGrid" class="theme-grid"></div>
+  </dialog>
+  <script type="module" src="/public/js/playlists.js"></script>
+</body>
+</html>

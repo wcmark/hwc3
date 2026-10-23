@@ -1,0 +1,54 @@
+.playlist-picker{min-width:min(100%,340px);margin:0}
+.playlist-picker .control{width:100%}
+
+.playlist-controls{
+    position:sticky;
+    top:0;z-index:5;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    max-width:940px;
+    margin:0 auto 14px;
+    padding:10px 10px;
+    background:rgba(11,17,20,.96);
+    backdrop-filter:blur(12px)
+}
+
+.playlist-action-buttons{display:flex;align-items:center;gap:8px;min-width:0;overflow-x:auto;padding:3px 0}
+.playlist-action-buttons>*{flex-shrink:0}
+.playlist-controls .btn{min-height:42px;white-space:nowrap}
+.playlist-controls-divider{height:26px;width:1px;margin:0 4px;background:var(--line,#304047)}
+.playlist-panel{max-width:940px;margin:0 auto}
+.playlist-items{display:grid;gap:5px;margin-top:12px}
+.playlist-entry{width:100%;display:flex;align-items:center;gap:13px;padding:12px 14px;border:1px solid transparent;border-radius:11px;background:#172329;color:var(--text);text-align:left}
+.playlist-entry:hover,.playlist-entry:focus-visible{border-color:#527f71;background:#1b2d2d;outline:none}
+.playlist-entry-icon{width:30px;height:30px;flex:0 0 30px;display:grid;place-items:center;border-radius:9px;background:#203c35;color:var(--accent);font-size:17px}
+.playlist-entry-name{min-width:0;overflow-wrap:anywhere}
+.playlist-entry-type{margin-left:auto;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.playlist-separator{display:flex;align-items:center;gap:12px;padding:13px 12px 7px;color:#a8c1b8}
+.playlist-separator-icon{width:30px;flex:0 0 30px;text-align:center;color:var(--accent)}
+.playlist-separator-name{font-size:13px;font-weight:700;letter-spacing:.02em}
+.playlist-notice{display:flex;align-items:flex-start;gap:14px;padding:14px 12px 14px 16px;margin-bottom:16px;border:1px solid #76613b;border-left:3px solid var(--gold);border-radius:12px;background:#30291d;color:#f4dfb3;line-height:1.5;font-size:14px}
+.playlist-notice[hidden],.theme-message[hidden],.current-theme[hidden]{display:none}
+.playlist-notice>span{flex:1;overflow-wrap:anywhere}
+.notice-close{display:grid;place-items:center;flex:none;width:32px;height:32px;padding:0;border:0;border-radius:8px;color:inherit;background:#ffffff0b;font-size:24px;line-height:1;cursor:pointer}
+.notice-close:hover{background:#ffffff18}
+.notice-close:focus-visible,.theme-choice:focus-visible,.current-theme:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.playlist-theme-slot{flex:0 0 104px;width:104px;height:76px;margin-left:auto}
+.current-theme{display:block;width:100%;height:100%;padding:0;overflow:hidden;background:#10191d;border:1px solid #44665a;border-radius:9px;color:var(--text);text-align:center}
+.theme-preview{display:block;width:100%;aspect-ratio:16/9;object-fit:contain;background:#080c0e}
+.theme-preview-empty{display:grid;place-items:center;color:var(--muted);font-size:25px}
+.current-theme-name{display:block;padding:2px 5px;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.theme-dialog{width:min(560px,calc(100vw - 24px));max-height:85dvh;padding:0;border:1px solid var(--line);border-radius:15px;background:var(--panel);color:var(--text);box-shadow:var(--shadow)}
+.theme-dialog::backdrop{background:#0009;backdrop-filter:blur(3px)}
+.theme-dialog-header{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;background:var(--panel);padding:12px 14px;border-bottom:1px solid var(--line)}
+.theme-dialog-header h2{font-size:17px;font-weight:600;margin:0}
+.theme-message{margin:12px 12px 0;padding:12px;border:1px solid #76613b;border-radius:9px;background:#30291d;color:#f4dfb3;font-size:13px;line-height:1.5}
+.theme-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:12px}
+.theme-choice{min-width:0;padding:0;overflow:hidden;border:1px solid #344249;border-radius:5px;background:#0d1518;color:var(--text);text-align:center}
+.theme-choice:hover,.theme-choice[aria-pressed="true"]{border-color:var(--accent);background:#20382f}
+.theme-choice[aria-pressed="true"]{box-shadow:0 0 0 1px var(--accent)}
+.theme-choice:disabled{opacity:.6;cursor:wait}
+.theme-choice-name{display:block;padding:5px 4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}
+.theme-grid-status{grid-column:1/-1;padding:24px;text-align:center;color:var(--muted)}
+@media(max-width:700px){.playlist-picker{width:100%}.hero{align-items:stretch;flex-direction:column}.playlist-controls{gap:8px}.playlist-controls .btn{padding-inline:11px}.playlist-entry{padding:11px}.playlist-entry-type{display:none}.playlist-theme-slot{flex-basis:88px;width:88px;height:66px}.theme-grid{gap:6px;padding:8px}.theme-choice-name{font-size:11px}}

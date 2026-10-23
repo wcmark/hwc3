@@ -1,0 +1,17 @@
+.bible-dialog{width:min(560px,calc(100vw - 20px));max-height:85dvh;padding:0;overflow:auto;border:1px solid var(--line);border-radius:12px;background:var(--panel);color:var(--text);box-shadow:var(--shadow)}
+.bible-dialog::backdrop{background:#000a;backdrop-filter:blur(3px)}
+.bible-dialog-header{position:sticky;top:0;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--panel);padding:10px 12px;border-bottom:1px solid var(--line)}
+.bible-dialog-header h2{margin:0;font-size:15px}
+.bible-dialog-header button{min-width:30px;font-size:19px}
+.bible-search-body{padding:12px}
+.bible-search-fields{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:8px}
+.bible-search-fields .field{min-width:0;font-size:12px}
+.bible-search-fields input{width:100%;min-width:0}
+.bible-search-hint{color:var(--muted);font-size:12px;line-height:1.5;min-height:1.5em}
+.bible-search-results{display:grid;gap:5px;max-height:42dvh;overflow-y:auto}
+.bible-search-results.number-results{grid-template-columns:repeat(auto-fill,minmax(42px,1fr))}
+.bible-search-result{padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--panel2);color:var(--text);font-size:13px;text-align:left;line-height:1.4;cursor:pointer}
+.number-results .bible-search-result{text-align:center}
+.bible-search-result:hover,.bible-dialog-header .btn:hover{background:#244138;border-color:var(--accent)}
+.bible-dialog :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media(max-width:400px){.bible-search-fields{gap:5px}.bible-search-fields .control{padding-inline:5px}}

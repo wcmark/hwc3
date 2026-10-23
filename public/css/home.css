@@ -1,0 +1,22 @@
+.home-shell{max-width:1440px;margin:auto}
+.home-header{flex-wrap:wrap;gap:10px;margin-bottom:14px;align-items:center}
+.home-header .brand{font-size:18px}
+.home-header .page-nav{flex-basis:100%;order:3;margin:0}
+.home-header .status-pill{margin-left:auto}
+@media(min-width:800px) and (min-height:700px){
+  .home-shell{padding:24px}
+  .home-header{margin-bottom:24px;gap:16px}
+  .home-header .brand{font-size:22px}
+  .home-header .brand-mark{width:44px;height:44px;font-size:22px}
+  .home-header .nav a{font-size:14px;padding:8px 12px}
+  .home-shell .grid.cards{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .home-shell .tile{min-height:clamp(96px,12vh,160px);padding:22px;border-radius:15px}
+  .home-shell .tile>div{gap:16px}
+  .home-shell .tile-icon{width:46px;height:46px;font-size:24px;border-radius:13px}
+  .home-shell .tile h2{font-size:21px}
+  .home-shell .tile .arrow{display:block;font-size:18px}
+  .home-shell .section-title{font-size:20px;margin:26px 0 12px}
+  .home-shell .panel{padding:20px;border-radius:14px;font-size:16px}
+  .home-shell .btn{padding:10px 14px;min-height:40px;font-size:14px}
+}
+@media(max-width:520px){.home-header .brand{font-size:15px}.home-header .brand-mark{width:30px;height:30px;border-radius:8px}.home-header .status-pill{font-size:10px;padding:6px 8px}}

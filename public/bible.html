@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Biblia · Holyrics</title>
+  <link rel="stylesheet" href="/public/css/app.css">
+  <link rel="stylesheet" href="/public/css/compact.css">
+  <link rel="stylesheet" href="/public/css/bible.css">
+</head>
+<body>
+  <main class="shell bible-shell">
+    <nav class="nav page-nav" aria-label="Secciones"></nav>
+    <div id="bibleToolbar" class="bible-toolbar" role="group" aria-label="Herramientas de Biblia">
+      <label class="quick-mode"><input type="checkbox" id="quickMode" checked> Presentación rápida</label>
+      <button id="closeVerse" class="btn secondary" type="button" title="Cerrar versículo (Esc)">Esc</button>
+      <button id="bibleTheme" class="btn secondary" type="button" aria-haspopup="dialog" aria-controls="bibleThemeDialog">Tema</button>
+      <label class="bible-version-label">Versión <select id="bibleVersion" class="control" aria-label="Versión de la Biblia para proyectar" disabled><option>Cargando…</option></select></label>
+      <div id="verseCount" class="bible-count" role="group" aria-label="Versículos por diapositiva">
+        <button type="button" class="btn secondary" data-count="1" aria-pressed="true" title="Mostrar un versículo">1</button>
+        <button type="button" class="btn secondary" data-count="2" aria-pressed="false" title="Mostrar dos versículos">2</button>
+        <button type="button" class="btn secondary" data-count="3" aria-pressed="false" title="Mostrar tres versículos">3</button>
+      </div>
+      <button id="openBibleSearch" class="btn secondary bible-search-button" type="button" title="Buscar pasaje" aria-label="Buscar pasaje" aria-haspopup="dialog" aria-controls="bibleSearchDialog" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="m15 15 6 6"/></svg></button>
+    </div>
+    <div class="bible-heading"><strong id="reference" aria-live="polite">Seleccioná un pasaje</strong></div>
+    <p id="bibleSettingsStatus" class="bible-settings-status" role="status" hidden></p>
+    <div class="bible-layout">
+      <section class="panel bible-books" aria-label="Libros de la Biblia">
+        <p id="booksStatus" class="muted" role="status">Cargando libros…</p>
+        <div class="bible-testaments">
+          <section aria-labelledby="oldTestamentTitle"><h2 id="oldTestamentTitle">Antiguo Testamento</h2><div id="oldTestamentBooks" class="bible-book-grid"></div></section>
+          <section aria-labelledby="newTestamentTitle"><h2 id="newTestamentTitle">Nuevo Testamento</h2><div id="newTestamentBooks" class="bible-book-grid"></div></section>
+        </div>
+      </section>
+      <section class="bible-passage" aria-label="Selección del pasaje" hidden>
+        <section id="chaptersSection" class="panel bible-chapters" aria-labelledby="chaptersTitle" hidden>
+          <h2 id="chaptersTitle">Capítulos</h2>
+          <div id="chapters" class="bible-number-grid chapter-numbers"></div>
+        </section>
+        <section id="versesSection" class="panel bible-verses" aria-labelledby="versesTitle" hidden>
+          <h2 id="versesTitle">Versículos</h2>
+          <p id="localBibleVersion" class="muted tiny"></p>
+          <div id="verses" class="bible-verse-list"></div>
+          <p id="projectionStatus" class="bible-projection-status" role="status"></p>
+        </section>
+      </section>
+    </div>
+  </main>
+  <button id="backToTop" class="btn secondary bible-back-top" type="button" aria-label="Volver arriba" title="Volver arriba" hidden>↑ Arriba</button>
+  <dialog id="bibleThemeDialog" class="bible-dialog" aria-labelledby="bibleThemeTitle">
+    <div class="bible-dialog-header"><h2 id="bibleThemeTitle">Tema de Biblia</h2><button id="closeBibleThemes" class="btn secondary" type="button" aria-label="Cerrar selector de temas">×</button></div>
+    <p id="bibleThemeMessage" class="bible-dialog-message" role="status" hidden></p>
+    <div id="bibleThemeGrid" class="bible-theme-grid"></div>
+  </dialog>
+  <dialog id="bibleSearchDialog" class="bible-dialog bible-search-dialog" aria-labelledby="bibleSearchTitle">
+    <div class="bible-dialog-header"><h2 id="bibleSearchTitle">Buscar pasaje</h2><button id="closeBibleSearch" class="btn secondary" type="button" aria-label="Cancelar búsqueda">×</button></div>
+    <div class="bible-search-body">
+      <div class="bible-search-fields">
+        <label class="field"><span>Libro</span><input id="searchBook" class="control" autocomplete="off" spellcheck="false" placeholder="Ej.: ge" aria-controls="bibleSearchResults" autofocus></label>
+        <label class="field"><span>Capítulo</span><input id="searchChapter" class="control" inputmode="numeric" autocomplete="off" aria-controls="bibleSearchResults" disabled></label>
+        <label class="field"><span>Versículo</span><input id="searchVerse" class="control" inputmode="numeric" autocomplete="off" aria-controls="bibleSearchResults" disabled></label>
+      </div>
+      <p id="bibleSearchHint" class="bible-search-hint" role="status" aria-live="polite"></p>
+      <div id="bibleSearchResults" class="bible-search-results"></div>
+      <p class="muted tiny">Tab o Enter confirma el número escrito. Al elegir el versículo se proyecta de inmediato. Esc cancela.</p>
+    </div>
+  </dialog>
+  <script type="module" src="/public/js/bible.js"></script>
+</body>
+</html>

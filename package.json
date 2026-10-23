@@ -1,0 +1,30 @@
+{
+  "name": "holyrics-web-control-v2",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Control web y panel de escritorio para Holyrics",
+  "author": "wcmark",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "start:web": "node server.js",
+    "pack": "electron-builder --win portable --x64 --publish never",
+    "dist": "electron-builder --win nsis --x64 --publish never"
+  },
+  "dependencies": {
+    "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "electron": "^44.7.0",
+    "electron-builder": "^26.15.3"
+  },
+  "build": {
+    "appId": "com.wcmark.holyricswebcontrol",
+    "productName": "Holyrics Web Control",
+    "files": ["electron/**/*", "public/**/*", "server.js", "package.json"],
+    "win": { "target": ["portable", "nsis"] },
+    "nsis": { "artifactName": "Holyrics-Web-Control-Setup-${version}-${arch}.${ext}" },
+    "portable": { "artifactName": "Holyrics-Web-Control-Portable-${version}-${arch}.${ext}" }
+  }
+}
