@@ -6,11 +6,11 @@ Copyright © 2026 Marcos Tapia (wcmark).
 
 El código propio de esta aplicación se distribuye bajo GNU GPL versión 3 únicamente (`GPL-3.0-only`). El texto completo se encuentra en `LICENSE`.
 
-## Holyrics y su logo
+## Holyrics e identidad visual
 
 Esta aplicación es un proyecto independiente para controlar Holyrics mediante su API. La mención de Holyrics no implica patrocinio ni aprobación oficial.
 
-El icono de Web Control 3 incorpora una adaptación del logo de Holyrics facilitado como referencia. El nombre y el logo de Holyrics corresponden a sus respectivos titulares. La licencia GPL del código de esta aplicación no concede derechos sobre ese nombre, logo ni los elementos derivados de él.
+El icono actual de Web Control 3 utiliza un diseño propio basado en un globo web, controles de reproducción y las letras WC3 sobre fondo verde. No incorpora el logo de Holyrics. El nombre y el logo de Holyrics corresponden a sus respectivos titulares; la licencia de esta aplicación no concede derechos sobre ellos.
 
 ## Dependencias y otros recursos
 

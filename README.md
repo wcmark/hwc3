@@ -8,7 +8,7 @@ Copyright © 2026 Marcos Tapia ([wcmark](https://github.com/wcmark)).
 
 El código propio de Web Control para Holyrics se distribuye bajo la licencia **GNU General Public License, versión 3 únicamente** (`GPL-3.0-only`). Puedes usarlo, modificarlo y redistribuirlo bajo sus condiciones. Al distribuir versiones modificadas, debes conservar esta licencia y facilitar el código fuente correspondiente. El programa se ofrece sin garantía, en los términos de la licencia.
 
-Consulta el texto completo en [LICENSE](LICENSE) y los avisos sobre dependencias, recursos y el logo de Holyrics en [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+Consulta el texto completo en [LICENSE](LICENSE) y los avisos sobre dependencias, recursos e identidad visual en [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 
 Los aportes para acompañar el desarrollo son voluntarios: [Ko-fi de Marcos Tapia](https://ko-fi.com/marcostapia).
 

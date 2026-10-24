@@ -27,7 +27,7 @@
     "appId": "com.wcmark.holyricswebcontrol",
     "productName": "Holyrics Web Control",
     "copyright": "Copyright © 2026 Marcos Tapia",
-    "files": ["electron/**/*", "public/**/*", "server.js", "package.json"],
+    "files": ["electron/**/*", "!electron/tray.ico", "public/**/*", "server.js", "package.json"],
     "extraFiles": ["LICENSE", "THIRD_PARTY_NOTICES.md"],
     "win": { "target": ["portable", "nsis"], "icon": "electron/app-icon.ico" },
     "nsis": { "artifactName": "Holyrics-Web-Control-Setup-${version}-${arch}.${ext}" },
