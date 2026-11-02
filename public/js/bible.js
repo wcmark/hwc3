@@ -12,6 +12,7 @@ let books = [];
 let selectedBook = null;
 let selectedChapter = null;
 let verseSession = null;
+let liveVerse = null;
 let actionQueue = Promise.resolve();
 const measure = document.createElement('canvas').getContext('2d');
 const toolbar = document.querySelector('#bibleToolbar');
@@ -25,6 +26,39 @@ function scrollToSection(node) {
 function enqueue(action) {
   actionQueue = actionQueue.then(action).catch(error => { toast(error.message, true); });
   return actionQueue;
+}
+
+function showVerseClose(projected) {
+  const visible = Boolean(projected);
+  document.querySelector('#verseCloseBar').hidden = !visible;
+  document.body.classList.toggle('bible-has-projection', visible);
+  document.documentElement.style.setProperty('--verse-close-height', visible ? '44px' : '0px');
+  document.querySelector('#closeVerse').title = `Cerrar versículo ${projected?.quick ? 'en presentación rápida' : 'en presentación normal'} (Esc)`;
+}
+async function readProjectedVerse() {
+  const [quickResult, mainResult] = await Promise.all([
+    holyrics('GetCurrentQuickPresentation'), holyrics('GetCurrentPresentation')
+  ]);
+  if (quickResult.data?.id) return { quick: true, data: quickResult.data };
+  if (mainResult.data?.type === 'verse') return { quick: false, data: mainResult.data };
+  return null;
+}
+function syncProjectedVerse(projected) {
+  liveVerse = projected;
+  showVerseClose(projected);
+  if (!projected) {
+    verseSession = null;
+    selectButton(versesNode.children, null);
+    return;
+  }
+  const id = String(projected.data.id ?? '');
+  const book = /^\d{8}$/.test(id) ? books.find(item => Number(item.number) === Number(id.slice(0, 2))) : null;
+  const chapter = Number(id.slice(2, 5));
+  const rows = (book?.content ?? []).filter(row => Number(row.chapter) === chapter).sort((a, b) => Number(a.verse) - Number(b.verse));
+  const index = rows.findIndex(row => Number(row.verse) === Number(id.slice(5)));
+  verseSession = book && index >= 0 ? { book, chapter, rows, index, quick: projected.quick } : null;
+  selectButton(versesNode.children, null);
+  updateVerseHighlight(false);
 }
 
 const groups = [
@@ -115,6 +149,8 @@ async function presentVerse(session, { scroll = true } = {}) {
   try {
     await holyrics('ShowVerse', { ids, quick_presentation: quick, ...controls.getOptions() });
     verseSession = session;
+    liveVerse = { quick, data: { id: ids[0], type: 'verse' } };
+    showVerseClose(liveVerse);
     updateVerseHighlight(scroll);
     if (selectedBook === book && selectedChapter === chapter) {
       projectionStatus.textContent = `${label} enviado a Holyrics.`;
@@ -134,28 +170,34 @@ function moveVerse(direction) {
 }
 function closeVerse() {
   return enqueue(async () => {
-    // Retain the mode of the verse actually sent, even if the checkbox changed.
-    if (verseSession?.quick ?? document.querySelector('#quickMode').checked) {
-      await holyrics('CloseCurrentQuickPresentation');
-    } else {
-      const current = await holyrics('GetCurrentPresentation');
-      if (current.data?.type !== 'verse') return;
-      await holyrics('CloseCurrentPresentation');
+    const button = document.querySelector('#closeVerse');
+    button.disabled = true;
+    try {
+      // Use live Holyrics state, never the checkbox or a stale local session.
+      // A quick verse can overlay a song that must remain open.
+      const projected = await readProjectedVerse();
+      if (projected) await holyrics(projected.quick ? 'CloseCurrentQuickPresentation' : 'CloseCurrentPresentation');
+      syncProjectedVerse(null);
+      projectionStatus.textContent = 'Versículo cerrado.';
+      window.scrollTo({ top: 0, behavior: scrollBehavior() });
+    } finally {
+      button.disabled = false;
     }
-    verseSession = null;
-    selectButton(versesNode.children, null);
-    projectionStatus.textContent = 'Versículo cerrado.';
   });
 }
 document.querySelector('#closeVerse').addEventListener('click', closeVerse);
 document.addEventListener('keydown', event => {
-  if (document.querySelector('dialog[open]')) return;
-  if (event.altKey || event.ctrlKey || event.metaKey || event.repeat) return;
+  if (event.defaultPrevented || document.querySelector('dialog[open]')) return;
+  if (event.altKey || event.ctrlKey || event.metaKey || event.repeat || event.isComposing) return;
+  if (event.key === 'Escape') {
+    event.preventDefault();
+    closeVerse();
+    return;
+  }
   if (event.target?.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(event.target?.tagName)) return;
-  if (!['ArrowLeft', 'ArrowRight', 'Escape'].includes(event.key)) return;
+  if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
   event.preventDefault();
-  if (event.key === 'Escape') closeVerse();
-  else moveVerse(event.key === 'ArrowRight' ? 1 : -1);
+  moveVerse(event.key === 'ArrowRight' ? 1 : -1);
 });
 
 function fitBookNames() {
@@ -218,30 +260,28 @@ async function loadBooks() {
 }
 async function refreshDisplayedVerse() {
   await booksReady;
-  // Read the actual live verse, including changes made directly in Holyrics.
-  // A quick verse may be covering a song; never change that underlying song.
-  const [quickResult, mainResult] = await Promise.allSettled([
-    holyrics('GetCurrentQuickPresentation'), holyrics('GetCurrentPresentation')
-  ]);
-  const quickData = quickResult.status === 'fulfilled' ? quickResult.value.data : null;
-  const mainData = mainResult.status === 'fulfilled' ? mainResult.value.data : null;
-  const quick = Boolean(quickData?.id);
-  const data = quick ? quickData : mainData?.type === 'verse' ? mainData : null;
-  if (!data) {
-    if (quickResult.status === 'rejected' && verseSession?.quick) throw quickResult.reason;
-    if (mainResult.status === 'rejected') throw mainResult.reason;
-    verseSession = null;
-    selectButton(versesNode.children, null);
-    return;
-  }
-  const id = String(data.id);
-  if (!/^\d{8}$/.test(id)) throw new Error('Holyrics no entregó una referencia válida del versículo activo.');
-  const book = books.find(item => Number(item.number) === Number(id.slice(0, 2)));
-  const chapter = Number(id.slice(2, 5));
-  const rows = (book?.content ?? []).filter(row => Number(row.chapter) === chapter).sort((a, b) => Number(a.verse) - Number(b.verse));
-  const index = rows.findIndex(row => Number(row.verse) === Number(id.slice(5)));
-  if (!book || index < 0) throw new Error('El pasaje activo no está disponible en la Biblia local.');
-  await presentVerse({ book, chapter, rows, index, quick }, { scroll: false });
+  const projected = await readProjectedVerse();
+  syncProjectedVerse(projected);
+  if (!projected) return;
+  if (!verseSession) throw new Error('El pasaje activo no está disponible en la Biblia local.');
+  await presentVerse(verseSession, { scroll: false });
 }
 const controls = initBibleControls({ enqueue, onChange: refreshDisplayedVerse });
 const booksReady = loadBooks();
+let pollingVerse = false;
+function pollProjectedVerse() {
+  if (pollingVerse || document.hidden) return;
+  pollingVerse = true;
+  // Share the action queue so an old poll cannot overwrite a completed close/show.
+  enqueue(async () => {
+    try {
+      await booksReady;
+      syncProjectedVerse(await readProjectedVerse());
+    } catch {
+      // Keep the last known state on connection errors; close checks it again.
+    } finally { pollingVerse = false; }
+  });
+}
+pollProjectedVerse();
+setInterval(pollProjectedVerse, 1000);
+document.addEventListener('visibilitychange', pollProjectedVerse);

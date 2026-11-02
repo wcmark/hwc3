@@ -90,9 +90,10 @@ export async function startServer({ dataDir = path.join(here, 'data'), onLog = (
   const secretPath = path.join(dataDir, 'server-secret');
   let config = { ...defaultConfig, ...(await readJson(configPath, {})) };
   delete config.mediaFolder;
-  config.teams = { ...defaultConfig.teams, ...(config.teams ?? {}) };
+  config.teams = config.teams && typeof config.teams === 'object' && !Array.isArray(config.teams)
+    ? { ...config.teams } : { ...defaultConfig.teams };
   for (const team of Object.values(config.teams)) team.htmlPort = validPort(team.htmlPort) ? Number(team.htmlPort) : 80;
-  if (!config.teams[config.activeTeam]) config.activeTeam = Object.keys(config.teams)[0] ?? 'Holyrics';
+  if (!Object.hasOwn(config.teams, config.activeTeam)) config.activeTeam = Object.keys(config.teams)[0] ?? '';
   let trusted = await readJson(trustedPath, {});
   let trustedSave = Promise.resolve();
   function persistTrusted() {
@@ -196,6 +197,7 @@ export async function startServer({ dataDir = path.join(here, 'data'), onLog = (
     '/letras': 'lyrics.html', '/playlists': 'playlists.html', '/medios': 'media.html',
     '/access': 'access.html', '/desktop': 'desktop.html'
   };
+  app.get('/favicon.ico', (_req, res) => res.sendFile(path.join(here, 'public/assets/app-icon.ico')));
   function requirePage(req, res, route) {
     const permitted = requestPages(req);
     res.setHeader('Cache-Control', 'no-store');
@@ -270,20 +272,27 @@ export async function startServer({ dataDir = path.join(here, 'data'), onLog = (
   });
   app.put('/api/desktop/config', localOnly, async (req, res) => {
     const body = req.body ?? {};
-    const teams = {};
+    const teams = Object.create(null);
+    if (!body.teams || typeof body.teams !== 'object' || Array.isArray(body.teams)) {
+      return res.status(400).json({ error: 'La lista de equipos no es válida.' });
+    }
     for (const [rawName, value] of Object.entries(body.teams ?? {})) {
       const name = safeName(rawName);
+      if (!value || typeof value !== 'object' || ['__proto__', 'constructor', 'prototype'].includes(name)) {
+        return res.status(400).json({ error: 'El equipo no es válido.' });
+      }
       const ip = String(value.ip ?? '').trim();
       const port = String(value.port ?? '8091').trim();
       const token = String(value.token ?? '').trim();
       const htmlPort = value.htmlPort ?? config.teams[name]?.htmlPort ?? 80;
       if (!validPort(htmlPort)) return res.status(400).json({ error: `El puerto HTML de ${name} debe estar entre 1 y 65535.` });
-      if (name && ip && validPort(port)) teams[name] = { ip, port, htmlPort: Number(htmlPort), token };
+      if (!name || !ip || !validPort(port)) return res.status(400).json({ error: `Completa el nombre, la IP y un puerto API válido para ${name || 'el equipo'}.` });
+      teams[name] = { ip, port, htmlPort: Number(htmlPort), token };
     }
-    config = {
+    const nextConfig = {
       ...config,
-      teams: Object.keys(teams).length ? teams : config.teams,
-      activeTeam: teams[body.activeTeam] ? body.activeTeam : Object.keys(teams)[0] ?? config.activeTeam,
+      teams,
+      activeTeam: Object.hasOwn(teams, body.activeTeam) ? body.activeTeam : Object.keys(teams)[0] ?? '',
       webPort: Math.max(1024, Math.min(65535, Number(body.webPort) || 5000)),
       password: String(body.password ?? ''),
       pptProjection: ['/widescreen', '/text', '/text2', '/text3'].includes(body.pptProjection) ? body.pptProjection : '/text3',
@@ -291,7 +300,8 @@ export async function startServer({ dataDir = path.join(here, 'data'), onLog = (
       pptEnabled: body.pptEnabled !== false,
       bindLan: body.bindLan !== false
     };
-    await fs.writeFile(configPath, JSON.stringify(config, null, 2), 'utf8');
+    await fs.writeFile(configPath, JSON.stringify(nextConfig, null, 2), 'utf8');
+    config = nextConfig;
     log('Configuración actualizada desde el escritorio');
     res.json({ ok: true, config });
   });
@@ -380,7 +390,7 @@ export async function startServer({ dataDir = path.join(here, 'data'), onLog = (
       const deviceId = authorizedDevice(req);
       const deviceName = deviceId ? trusted[deviceId]?.name : null;
       const actor = deviceName || (isLoopback(req.ip) ? 'Equipo local' : 'Dispositivo autorizado');
-      if (!['GetCurrentPresentation', 'GetCurrentTheme'].includes(action)) log(`Acción ${action} solicitada por ${actor}`, `${cleanIp(req.ip)} · HTTP ${response.status}`);
+      if (!['GetCurrentPresentation', 'GetCurrentQuickPresentation', 'GetCurrentTheme', 'GetMediaPlayerInfo'].includes(action)) log(`Acción ${action} solicitada por ${actor}`, `${cleanIp(req.ip)} · HTTP ${response.status}`);
       res.status(response.status).type(response.headers.get('content-type') ?? 'application/json').send(text);
     } catch (error) {
       log(`Error al consultar Holyrics (${action})`, error.message);

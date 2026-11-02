@@ -8,6 +8,38 @@ let refreshingCounter = false;
 let sendingAction = false;
 let stopped = false;
 
+const fullscreenButton = document.querySelector('#toggleFullscreen');
+const fullscreenRoot = document.documentElement;
+const enterFullscreen = fullscreenRoot.requestFullscreen ?? fullscreenRoot.webkitRequestFullscreen;
+const exitFullscreen = document.exitFullscreen ?? document.webkitExitFullscreen;
+const fullscreenElement = () => document.fullscreenElement ?? document.webkitFullscreenElement;
+function updateFullscreenButton() {
+  const active = Boolean(fullscreenElement());
+  const supported = Boolean(enterFullscreen && exitFullscreen)
+    && (document.fullscreenEnabled ?? document.webkitFullscreenEnabled ?? true);
+  fullscreenButton.disabled = !supported;
+  fullscreenButton.setAttribute('aria-pressed', String(active));
+  fullscreenButton.title = supported
+    ? (active ? 'Salir de pantalla completa' : 'Entrar en pantalla completa')
+    : 'Pantalla completa no disponible en este navegador o panel';
+  fullscreenButton.setAttribute('aria-label', fullscreenButton.title);
+  fullscreenButton.querySelector('path').setAttribute('d', active
+    ? 'M3 9h6V3m6 0v6h6M9 21v-6H3m12 6v-6h6'
+    : 'M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6');
+}
+fullscreenButton.addEventListener('click', async () => {
+  fullscreenButton.disabled = true;
+  try {
+    if (fullscreenElement()) await exitFullscreen.call(document);
+    else await enterFullscreen.call(fullscreenRoot);
+  } catch {
+    showStatus('No se pudo cambiar la pantalla completa. El navegador o panel puede tener esta función restringida.');
+  } finally { updateFullscreenButton(); }
+});
+document.addEventListener('fullscreenchange', updateFullscreenButton);
+document.addEventListener('webkitfullscreenchange', updateFullscreenButton);
+updateFullscreenButton();
+
 function showStatus(message = '') {
   status.textContent = message;
   status.hidden = !message;

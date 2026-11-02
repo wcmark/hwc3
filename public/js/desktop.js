@@ -1,6 +1,7 @@
 import { toast, esc } from './core.js';
 import { loadAccess } from './device-access.js';
 import './desktop-startup.js';
+import { uiIcon } from './ui-icons.js';
 const aboutButton = document.querySelector('#aboutApp');
 if (window.holyricsDesktop?.openAbout) {
   aboutButton.hidden = false;
@@ -27,6 +28,10 @@ function showTeam(teamName = selectedTeam) {
   document.querySelector('#teamPort').value = team.port ?? '8091';
   document.querySelector('#teamHtmlPort').value = team.htmlPort ?? 80;
   document.querySelector('#teamToken').value = team.token ?? '';
+  setTokenVisible(false);
+  for (const id of ['teamIp', 'teamPort', 'teamHtmlPort', 'teamToken', 'pasteToken', 'toggleToken', 'testConnection', 'deleteTeam']) {
+    document.getElementById(id).disabled = !teamName;
+  }
 }
 function renderTeamSelect() {
   const select = document.querySelector('#teamSelect');
@@ -51,6 +56,7 @@ async function loadConfig() {
   renderTeamSelect();
   document.querySelector('#webPortInput').value = config.webPort ?? 5000;
   document.querySelector('#passwordInput').value = config.password ?? '';
+  setPasswordVisible(false);
   document.querySelector('#pptProjection').value = config.pptProjection ?? '/text3';
   document.querySelector('#pptNextProjection').value = config.pptNextProjection ?? '';
   document.querySelector('#pptEnabled').checked = config.pptEnabled !== false;
@@ -64,11 +70,13 @@ document.querySelector('#teamSelect').addEventListener('change', event => {
   showTeam(selectedTeam);
 });
 document.querySelector('#addTeam').addEventListener('click', () => {
+  if (!config) return;
   const editor = document.querySelector('#newTeamEditor');
   editor.hidden = false;
   document.querySelector('#newTeamName').focus();
 });
 document.querySelector('#createTeam').addEventListener('click', () => {
+  if (!config) return;
   const nameInput = document.querySelector('#newTeamName');
   const safe = nameInput.value.trim().replace(/[<>]/g, '').slice(0, 48);
   if (safe.length < 2) return toast('Escribe un nombre de al menos dos caracteres.', true);
@@ -81,6 +89,59 @@ document.querySelector('#createTeam').addEventListener('click', () => {
   renderTeamSelect();
   document.querySelector('#teamIp').focus();
 });
+
+const deleteDialog = document.querySelector('#deleteTeamDialog');
+let teamToDelete = '';
+document.querySelector('#deleteTeam').addEventListener('click', () => {
+  if (!config || !selectedTeam) return;
+  teamToDelete = selectedTeam;
+  document.querySelector('#deleteTeamMessage').textContent = `¿Eliminar el equipo «${teamToDelete}»?`;
+  deleteDialog.showModal();
+});
+document.querySelector('#cancelDeleteTeam').addEventListener('click', () => deleteDialog.close());
+document.querySelector('#confirmDeleteTeam').addEventListener('click', () => {
+  if (!teamToDelete || !Object.hasOwn(config.teams, teamToDelete)) return deleteDialog.close();
+  delete config.teams[teamToDelete];
+  if (config.activeTeam === teamToDelete) config.activeTeam = Object.keys(config.teams)[0] ?? '';
+  document.querySelector('#newTeamEditor').hidden = true;
+  renderTeamSelect();
+  deleteDialog.close();
+  document.querySelector('#saveResult').textContent = 'Equipo eliminado de la lista. Guarda la configuración para aplicar el cambio.';
+  toast('Equipo eliminado de la lista. Guarda la configuración.');
+});
+deleteDialog.addEventListener('close', () => { teamToDelete = ''; });
+
+function setSecretVisible(inputId, buttonId, name, visible) {
+  const button = document.getElementById(buttonId);
+  document.getElementById(inputId).type = visible ? 'text' : 'password';
+  button.innerHTML = uiIcon(visible ? 'eyeOff' : 'eye');
+  button.title = `${visible ? 'Ocultar' : 'Mostrar'} ${name}`;
+  button.setAttribute('aria-label', button.title);
+  button.setAttribute('aria-pressed', String(visible));
+}
+function setTokenVisible(visible) { setSecretVisible('teamToken', 'toggleToken', 'token', visible); }
+function setPasswordVisible(visible) { setSecretVisible('passwordInput', 'togglePassword', 'contraseña', visible); }
+setTokenVisible(false);
+setPasswordVisible(false);
+document.querySelector('#togglePassword').addEventListener('click', () => setPasswordVisible(document.querySelector('#passwordInput').type === 'password'));
+document.querySelector('#toggleToken').addEventListener('click', () => setTokenVisible(document.querySelector('#teamToken').type === 'password'));
+document.querySelector('#pasteToken').innerHTML = uiIcon('clipboard');
+document.querySelector('#pasteToken').addEventListener('click', async () => {
+  const button = document.querySelector('#pasteToken');
+  const destinationTeam = selectedTeam;
+  if (!destinationTeam) return;
+  button.disabled = true;
+  try {
+    const text = window.holyricsDesktop?.readClipboardText
+      ? await window.holyricsDesktop.readClipboardText() : await navigator.clipboard.readText();
+    if (selectedTeam !== destinationTeam) return;
+    if (!text.trim()) return toast('El portapapeles no contiene texto.', true);
+    document.querySelector('#teamToken').value = text.trim();
+    document.querySelector('#teamToken').dispatchEvent(new Event('input', { bubbles: true }));
+    toast('Token pegado. Guarda la configuración para aplicarlo.');
+  } catch { toast('No se pudo acceder al portapapeles. Podés pegar el token en el campo con Ctrl+V.', true); }
+  finally { button.disabled = !selectedTeam; }
+});
 document.querySelector('#cancelNewTeam').addEventListener('click', () => {
   document.querySelector('#newTeamName').value = '';
   document.querySelector('#newTeamEditor').hidden = true;
@@ -90,7 +151,7 @@ document.querySelector('#newTeamName').addEventListener('keydown', event => {
   if (event.key === 'Escape') document.querySelector('#cancelNewTeam').click();
 });
 configForm.addEventListener('submit', async event => {
-  event.preventDefault(); saveTeamFields();
+  event.preventDefault(); if (!config) return; saveTeamFields();
   config.activeTeam = document.querySelector('#teamSelect').value;
   config.webPort = Number(document.querySelector('#webPortInput').value);
   config.password = document.querySelector('#passwordInput').value;
@@ -100,7 +161,7 @@ configForm.addEventListener('submit', async event => {
   config.bindLan = document.querySelector('#bindLan').checked;
   try {
     const result = await request('/api/desktop/config', { method: 'PUT', body: JSON.stringify(config) });
-    config = result.config; document.querySelector('#saveResult').textContent = 'Configuración guardada. Recargá Presentación para actualizar sus transmisiones. Solo el puerto del servidor web y la conexión a la red requieren reiniciar.'; displayUrl(); toast('Configuración guardada');
+    config = result.config; renderTeamSelect(); document.querySelector('#saveResult').textContent = 'Configuración guardada. Recargá Presentación para actualizar sus transmisiones. Solo el puerto del servidor web y la conexión a la red requieren reiniciar.'; displayUrl(); toast('Configuración guardada');
   } catch (error) { toast(error.message, true); }
 });
 document.querySelector('#testConnection').addEventListener('click', async () => {
@@ -137,6 +198,7 @@ document.querySelector('#legacyConfig').addEventListener('change', async event =
     renderTeamSelect();
     document.querySelector('#webPortInput').value = config.webPort;
     document.querySelector('#passwordInput').value = config.password;
+    setPasswordVisible(false);
     document.querySelector('#pptProjection').value = config.pptProjection;
     document.querySelector('#pptNextProjection').value = config.pptNextProjection ?? '';
     displayUrl();
@@ -152,7 +214,7 @@ document.querySelectorAll('[data-tab]').forEach(button => button.addEventListene
 document.querySelector('#refreshAccess').addEventListener('click', loadAccess);
 document.querySelector('#refreshLogs').addEventListener('click', loadLogs);
 async function loadLogs() {
-  try { const data = await request('/api/desktop/logs'); document.querySelector('#logs').innerHTML = (data.logs ?? []).filter(item => !item.message.includes('GetCurrentPresentation')).map(item => `<div class="log"><span class="muted">${new Date(item.at).toLocaleString()}</span> · ${esc(item.message)} ${item.details ? `· ${esc(item.details)}` : ''}</div>`).join('') || '<div class="empty">No hay eventos.</div>'; }
+  try { const data = await request('/api/desktop/logs'); document.querySelector('#logs').innerHTML = (data.logs ?? []).filter(item => !['GetCurrentPresentation', 'GetCurrentQuickPresentation', 'GetMediaPlayerInfo'].some(action => item.message.includes(action))).map(item => `<div class="log"><span class="muted">${new Date(item.at).toLocaleString()}</span> · ${esc(item.message)} ${item.details ? `· ${esc(item.details)}` : ''}</div>`).join('') || '<div class="empty">No hay eventos.</div>'; }
   catch (error) { toast(error.message, true); }
 }
 loadConfig().catch(error => toast(error.message, true));

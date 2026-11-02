@@ -17,14 +17,14 @@
 .media-shell #mute{height:34px;padding:5px}
 .media-icon{width:18px;height:18px;display:block;flex:none;pointer-events:none}
 .media-shell .media-icon-button{width:32px;height:32px;padding:5px;flex:none}
-.media-shell button:not(:disabled):hover{background:#29453e;border-color:#70e1c099;color:#f3fffb}
-.media-shell .btn.primary:not(:disabled):hover{background:#9aeed4;border-color:#b5f5e1;color:#08251c}
+.media-shell button:not(:disabled):hover{background:#234c76;border-color:#69b5ff99;color:#f3f8ff}
+.media-shell .btn.primary:not(:disabled):hover{background:#a2d1ff;border-color:#c0e1ff;color:#061f39}
 .media-shell button:focus-visible,.media-shell input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .media-shell .tab-row button{border:1px solid transparent;border-radius:5px;transition:background .15s,border-color .15s}
-.media-shell .tab-row button.active{background:#20372f;border-color:#42685a}
-.media-shell .tab-row button.active:hover{background:#31594b;border-color:var(--accent);color:#f3fffb}
+.media-shell .tab-row button.active{background:#19395b;border-color:#38648e}
+.media-shell .tab-row button.active:hover{background:#285681;border-color:var(--accent);color:#f3f8ff}
 .media-library .toolbar{flex-wrap:nowrap}
-.media-library #mediaTabs{position:sticky;top:var(--media-player-height,190px);z-index:9;background:#111a1e;margin:-10px -10px 8px;padding:8px 10px;border-radius:8px 8px 0 0;box-shadow:0 4px 8px #0003}
+.media-library #mediaTabs{position:sticky;top:var(--media-player-height,190px);z-index:9;background:#101e30;margin:-10px -10px 8px;padding:8px 10px;border-radius:8px 8px 0 0;box-shadow:0 4px 8px #0003}
 .media-library .toolbar .grow{min-width:0}
 .folder-bar{display:flex;align-items:center;gap:6px;margin-top:6px;min-width:0}
 #folderName{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

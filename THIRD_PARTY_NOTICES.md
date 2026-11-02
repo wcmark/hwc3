@@ -10,7 +10,7 @@ El código propio de esta aplicación se distribuye bajo GNU GPL versión 3 úni
 
 Esta aplicación es un proyecto independiente para controlar Holyrics mediante su API. La mención de Holyrics no implica patrocinio ni aprobación oficial.
 
-El icono actual de Web Control 3 utiliza un diseño propio basado en un globo web, controles de reproducción y las letras WC3 sobre fondo verde. No incorpora el logo de Holyrics. El nombre y el logo de Holyrics corresponden a sus respectivos titulares; la licencia de esta aplicación no concede derechos sobre ellos.
+El icono actual de Web Control 3 utiliza un diseño propio basado en un globo web y controles de reproducción sobre fondo azul. El control central incorpora intencionalmente una H y las barras laterales siguen la curvatura del globo. No incorpora el logo de Holyrics. El nombre y el logo de Holyrics corresponden a sus respectivos titulares; la licencia de esta aplicación no concede derechos sobre ellos.
 
 ## Dependencias y otros recursos
 

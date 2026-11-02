@@ -12,6 +12,6 @@
 .bible-search-results.number-results{grid-template-columns:repeat(auto-fill,minmax(42px,1fr))}
 .bible-search-result{padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:var(--panel2);color:var(--text);font-size:13px;text-align:left;line-height:1.4;cursor:pointer}
 .number-results .bible-search-result{text-align:center}
-.bible-search-result:hover,.bible-dialog-header .btn:hover{background:#244138;border-color:var(--accent)}
+.bible-search-result:hover,.bible-dialog-header .btn:hover{background:#1c416a;border-color:var(--accent)}
 .bible-dialog :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 @media(max-width:400px){.bible-search-fields{gap:5px}.bible-search-fields .control{padding-inline:5px}}

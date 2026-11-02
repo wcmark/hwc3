@@ -1,6 +1,6 @@
 /* Shared compact layout for browser panels, tablets and OBS docks. */
 [hidden]{display:none!important}
-body{font-size:13px;min-width:0;background:var(--bg,#0b1114)}
+body{font-size:13px;min-width:0;background:var(--bg,#091321)}
 .shell{max-width:none;padding:8px}
 .page-nav{display:flex;flex-wrap:wrap;gap:3px;width:100%;margin:0 0 8px;min-width:0;flex:none}
 .nav.page-nav a{padding:5px 8px;border-radius:6px;font-size:12px;line-height:1.4;white-space:nowrap}
@@ -63,3 +63,14 @@ body{font-size:13px;min-width:0;background:var(--bg,#0b1114)}
 .bible-shell{gap:6px;padding:8px}
 .bible-shell .page-nav{margin:0}
 @media(max-width:520px){.device-grid{grid-template-columns:1fr}.ppt-shell{padding:6px}.ppt-controls button{min-height:34px}.theme-grid{gap:5px}.bible-shell{padding:6px}.nav.page-nav a{padding:4px 6px}.shell:not(.bible-shell){padding:6px}}
+
+/* Small shared symbols keep labels readable in narrow OBS panels. */
+.ui-icon{display:inline-block;width:17px;height:17px;flex:none;vertical-align:middle}
+.nav.page-nav a{display:inline-flex;align-items:center;gap:5px}
+#mediaTabs button{display:inline-flex;align-items:center;justify-content:center;gap:5px}
+#mediaTabs .media-icon{width:17px;height:17px;flex:none}
+.brand-mark.app-logo{display:block;object-fit:contain;background:transparent;border:0;flex:none;border-radius:0}
+
+/* Blue application identity. */
+input[type=checkbox],input[type=radio]{accent-color:var(--accent)}
+.btn.primary:not(:disabled):hover{background:#9bceff;border-color:#c7e5ff;color:#061f39}

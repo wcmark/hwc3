@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, Tray, shell, ipcMain, dialog } from 'electron';
+import { app, BrowserWindow, Menu, Tray, shell, ipcMain, dialog, clipboard } from 'electron';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { startServer } from '../server.js';
@@ -43,7 +43,7 @@ async function openAbout(mode = 'about') {
     title: mode === 'welcome' ? 'Bienvenido · Web Control para Holyrics' : 'Acerca de · Web Control para Holyrics',
     parent: mainWindow, modal: true, show: false, autoHideMenuBar: true,
     icon: appIcon,
-    backgroundColor: '#0b1114',
+    backgroundColor: '#091321',
     webPreferences: { preload: path.join(here, 'about-preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true }
   });
   aboutWindow.setMenu(null);
@@ -84,7 +84,7 @@ async function openWindow() {
     width: 980, height: 760, minWidth: 760, minHeight: 600, show: false,
     title: 'Holyrics Web Control',
     icon: appIcon,
-    backgroundColor: '#0b1114',
+    backgroundColor: '#091321',
     webPreferences: { preload: path.join(here, 'preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true }
   });
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
@@ -126,6 +126,10 @@ if (hasSingleInstanceLock) app.whenReady().then(async () => {
     return shell.openExternal(`http://localhost:${webServer.server.address().port}`);
   });
   ipcMain.handle('open-about', event => { requireWindow(event, mainWindow); return openAbout(); });
+  ipcMain.handle('read-clipboard-text', event => {
+    requireWindow(event, mainWindow);
+    return clipboard.readText();
+  });
   ipcMain.handle('startup-settings-get', event => { requireWindow(event, mainWindow); return startupPreferences.read(); });
   ipcMain.handle('startup-settings-set', (event, settings) => { requireWindow(event, mainWindow); return startupPreferences.update(settings); });
   ipcMain.handle('about-info', event => {

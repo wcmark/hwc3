@@ -6,12 +6,15 @@
   <meta name="theme-color" content="#191919">
   <title>Presentación · Holyrics</title>
   <link rel="stylesheet" href="/public/css/ppt.css">
-</head>
+<link rel="icon" href="/public/assets/app-icon.ico" sizes="any"></head>
 <body>
   <main class="ppt-shell">
     <section id="streamGrid" class="stream-grid">
       <article id="currentPanel" class="stream-panel current-panel">
-        <h1>Diapositiva actual</h1>
+        <div class="ppt-panel-heading">
+          <h1>Diapositiva actual</h1>
+          <button id="toggleFullscreen" class="ppt-fullscreen" type="button" title="Entrar en pantalla completa" aria-label="Entrar en pantalla completa" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/></svg></button>
+        </div>
         <div class="current-content">
           <div class="stream-frame-wrap">
             <iframe id="currentStream" title="Transmisión de la diapositiva actual" allow="autoplay; fullscreen" tabindex="-1"></iframe>

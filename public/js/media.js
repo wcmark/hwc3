@@ -49,9 +49,13 @@ const libraryKinds = {
   Files: { label: 'Archivo', icon: 'file', action: 'ExecuteFile', verb: 'Ejecutar', actionIcon: 'execute' },
   Texts: { label: 'Texto', icon: 'text', action: 'ShowText', verb: 'Proyectar', actionIcon: 'project' }
 };
+document.querySelectorAll('#mediaTabs [data-kind]').forEach(button => {
+  button.insertAdjacentHTML('afterbegin', icon(libraryKinds[button.dataset.kind].icon));
+});
 let kind = 'Images', folder = '', libraryRequest = 0, filterTimer;
 const list = document.querySelector('#mediaItems'), filter = document.querySelector('#filter');
 const normalize = value => String(value ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('es');
+const nameOrder = new Intl.Collator('es', { sensitivity: 'base', numeric: true });
 
 document.querySelectorAll('#mediaTabs button').forEach(button => button.addEventListener('click', () => {
   clearTimeout(filterTimer);
@@ -89,6 +93,12 @@ async function loadFiles() {
     if (request !== libraryRequest) return;
     let items = Array.isArray(result.data) ? result.data : [];
     if (selectedKind === 'Texts') items = items.filter(item => normalize(item.title).includes(normalize(query)));
+    items = [...items].sort((a, b) => {
+      const folderOrder = Number(selectedKind !== 'Texts' && Boolean(b.isDir)) - Number(selectedKind !== 'Texts' && Boolean(a.isDir));
+      const nameA = selectedKind === 'Texts' ? a.title : a.name;
+      const nameB = selectedKind === 'Texts' ? b.title : b.name;
+      return folderOrder || nameOrder.compare(String(nameA ?? ''), String(nameB ?? ''));
+    });
     if (!items.length) { list.innerHTML = '<div class="empty">No se encontraron elementos en esta categoría.</div>'; return; }
     list.innerHTML = items.map((item, index) => {
       const name = String(selectedKind === 'Texts' ? item.title || 'Texto sin título' : item.name || 'Sin nombre');

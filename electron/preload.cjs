@@ -5,6 +5,7 @@ contextBridge.exposeInMainWorld('holyricsDesktop', Object.freeze({
   isDesktop: true,
   openWebPanel: () => ipcRenderer.invoke('open-web-panel'),
   openAbout: () => ipcRenderer.invoke('open-about'),
+  readClipboardText: () => ipcRenderer.invoke('read-clipboard-text'),
   getStartupSettings: () => ipcRenderer.invoke('startup-settings-get'),
   setStartupSettings: settings => ipcRenderer.invoke('startup-settings-set', settings)
 }));

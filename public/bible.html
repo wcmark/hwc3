@@ -7,13 +7,13 @@
   <link rel="stylesheet" href="/public/css/app.css">
   <link rel="stylesheet" href="/public/css/compact.css">
   <link rel="stylesheet" href="/public/css/bible.css">
-</head>
+<link rel="icon" href="/public/assets/app-icon.ico" sizes="any"></head>
 <body>
+  <div id="verseCloseBar" class="verse-close-bar" hidden><button id="closeVerse" class="btn secondary" type="button" title="Cerrar proyección de versículos (Esc)" aria-label="Cerrar proyección de versículos (Esc)">× Cerrar versículo <kbd>Esc</kbd></button></div>
   <main class="shell bible-shell">
     <nav class="nav page-nav" aria-label="Secciones"></nav>
     <div id="bibleToolbar" class="bible-toolbar" role="group" aria-label="Herramientas de Biblia">
       <label class="quick-mode"><input type="checkbox" id="quickMode" checked> Presentación rápida</label>
-      <button id="closeVerse" class="btn secondary" type="button" title="Cerrar versículo (Esc)">Esc</button>
       <button id="bibleTheme" class="btn secondary" type="button" aria-haspopup="dialog" aria-controls="bibleThemeDialog">Tema</button>
       <label class="bible-version-label">Versión <select id="bibleVersion" class="control" aria-label="Versión de la Biblia para proyectar" disabled><option>Cargando…</option></select></label>
       <div id="verseCount" class="bible-count" role="group" aria-label="Versículos por diapositiva">

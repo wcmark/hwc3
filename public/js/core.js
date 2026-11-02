@@ -1,4 +1,5 @@
 import './back-to-top.js';
+import { uiIcon } from './ui-icons.js';
 
 export async function holyrics(action, data = {}) {
   const response = await fetch(`/api/holyrics/${encodeURIComponent(action)}`, {
@@ -34,8 +35,8 @@ export async function currentInfo() {
 
 export function renderNav(active = '', allowedPages = []) {
   const nav = document.querySelector('.nav');
-  const links = [['/','Inicio'],['/ppt','Presentación'],['/playlists','Playlists'],['/letras','Letras'],['/medios','Medios'],['/biblia','Biblia'],['/chat','Chat']];
-  if (nav) nav.innerHTML = links.filter(([href]) => allowedPages.includes(href)).map(([href,label]) => `<a href="${href}" class="${active === href ? 'active' : ''}"${href === '/chat' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${label}</a>`).join('');
+  const links = [['/','Inicio','home'],['/ppt','Presentación','presentation'],['/playlists','Playlists','playlist'],['/letras','Letras','lyrics'],['/medios','Medios','media'],['/biblia','Biblia','bible'],['/chat','Chat','chat']];
+  if (nav) nav.innerHTML = links.filter(([href]) => allowedPages.includes(href)).map(([href,label,icon]) => `<a href="${href}" title="${label}" class="${active === href ? 'active' : ''}"${href === '/chat' ? ' target="_blank" rel="noopener noreferrer"' : ''}>${uiIcon(icon)}<span>${label}</span></a>`).join('');
   document.querySelectorAll('.home-shell .tile').forEach(tile => { tile.hidden = !allowedPages.includes(tile.getAttribute('href')); });
 }
 
