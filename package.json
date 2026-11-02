@@ -1,6 +1,6 @@
 {
   "name": "holyrics-web-control-v2",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "private": true,
   "type": "module",
   "description": "Control web y panel de escritorio para Holyrics",
@@ -20,17 +20,35 @@
     "express": "^5.3.0"
   },
   "devDependencies": {
-    "electron": "^44.7.0",
+    "electron": "^45.2.1",
     "electron-builder": "^26.15.3"
   },
   "build": {
     "appId": "com.wcmark.holyricswebcontrol",
     "productName": "Holyrics Web Control",
     "copyright": "Copyright © 2026 Marcos Tapia",
-    "files": ["electron/**/*", "public/**/*", "server.js", "package.json"],
-    "extraFiles": ["LICENSE", "THIRD_PARTY_NOTICES.md"],
-    "win": { "target": ["portable", "nsis"], "icon": "electron/app-icon.ico" },
-    "nsis": { "artifactName": "Holyrics-Web-Control-Setup-${version}-${arch}.${ext}" },
-    "portable": { "artifactName": "Holyrics-Web-Control-Portable-${version}-${arch}.${ext}" }
+    "files": [
+      "electron/**/*",
+      "public/**/*",
+      "server.js",
+      "package.json"
+    ],
+    "extraFiles": [
+      "LICENSE",
+      "THIRD_PARTY_NOTICES.md"
+    ],
+    "win": {
+      "target": [
+        "portable",
+        "nsis"
+      ],
+      "icon": "electron/app-icon.ico"
+    },
+    "nsis": {
+      "artifactName": "Holyrics-Web-Control-Setup-${version}-${arch}.${ext}"
+    },
+    "portable": {
+      "artifactName": "Holyrics-Web-Control-Portable-${version}-${arch}.${ext}"
+    }
   }
 }
